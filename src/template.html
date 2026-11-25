@@ -106,7 +106,7 @@ input:focus-visible,button:focus-visible{outline:3px solid var(--p);outline-offs
 .appd{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.appd label{font-size:14px;color:var(--mut)}
 .res{margin-top:14px;border-top:2px solid var(--ink);padding-top:4px}
 .rline{display:flex;justify-content:space-between;gap:10px;padding:10px 4px;font-size:15px;border-bottom:1px solid var(--line)}
-.rline .d{white-space:nowrap;color:var(--mut)}.rline.hit .d{color:var(--o);font-weight:700}
+.rline .d{white-space:nowrap;color:var(--mut)}.rline.bad .d{color:var(--red);white-space:normal;text-align:right}.rline.hit .d{color:var(--o);font-weight:700}
 .verdict{margin:12px 0 0;padding:12px 14px;font-size:15px;border:1px solid}
 .verdict.y{background:var(--obg);color:var(--o);border-color:var(--o)}.verdict.n{background:var(--pbg);color:var(--n);border-color:var(--p)}
 .small{font-size:13px;color:var(--mut);margin-top:10px}
@@ -189,7 +189,8 @@ win:['신청일 기준 최근 5년 안에 ',' within the last 5 years before app
 appdate:['신청 예정일','Planned application date','预计申请日','申請予定日'],
 country:['나라','Country','国家','国'],from:['시작일','From','开始日','開始日'],to:['종료일 (비우면 신청일까지)','To (blank = until application)','结束日（空白则至申请日）','終了日（空欄なら申請日まで）'],
 cph:['예: 일본','e.g. Japan','例：日本','例：日本'],
-addrow:['+ 체류 기록 추가','+ Add a stay','+ 添加停留记录','+ 滞在記録を追加'],del:['삭제','Remove','删除','削除'],
+addrow:['+ 체류 기록 추가','+ Add a stay','+ 添加停留记录','+ 滞在記録を追加'],baddate:['종료일이 시작일보다 빨라요. 날짜를 확인해 주세요.','End date is before the start date. Please check.','结束日早于开始日，请检查日期。','終了日が開始日より前です。日付を確認してください。'],
+del:['삭제','Remove','删除','削除'],
 dur:['{y}년 {mo}개월 {d}일','{y}y {mo}m {d}d','{y}年{mo}个月{d}天','{y}年{mo}か月{d}日'],
 counted:['(최근 5년 안 기간만 계산)','(only days within the last 5 years)','（仅计算近5年内）','（最近5年以内の期間のみ計算）'],
 yes:['범죄경력증명서가 필요한 나라: {c}','Criminal record certificate needed from: {c}','需要犯罪记录证明的国家：{c}','犯罪経歴証明書が必要な国：{c}'],
@@ -270,13 +271,14 @@ function calc(){
   const ws=w?addM(app,-12*w):null;
   const out=[];const hits=[];
   rows.forEach(r=>{const f=pd(r.f);if(!f)return;let t=pd(r.t)||app;if(t>app)t=app;let s=f;let clipped=false;if(ws&&s<ws){s=ws;clipped=true}
-    if(t<=s){out.push({r,txt:'0',hit:false});return}
+    if(pd(r.t)&&pd(r.t)<f){out.push({r,name:r.c.trim()||U('unnamed'),txt:U('baddate'),hit:false,bad:true});return}
+    if(t<=s){out.push({r,name:r.c.trim()||U('unnamed'),txt:U('dur',{y:0,mo:0,d:0})+' '+U('counted'),hit:false});return}
     const dd=diff(s,t);const hit=addM(s,m)<=t;const name=r.c.trim()||U('unnamed');if(hit&&!hits.includes(name))hits.push(name);
     out.push({r,name,txt:U('dur',dd)+(clipped?' '+U('counted'):''),hit});});
   if(!out.length){$('res').innerHTML=`<p class="small">${U('nodata')}</p>`;lastHit=null;return}
   lastHit=hits;
   const canApply=V&&V.q.some(q=>q.ov)&&visibleQs().some(q=>q.ov);
-  $('res').innerHTML=out.map(o=>`<div class="rline${o.hit?' hit':''}"><span>${esc(o.name||o.r.c||U('unnamed'))}</span><span class="d">${esc(o.txt)}</span></div>`).join('')+
+  $('res').innerHTML=out.map(o=>`<div class="rline${o.hit?' hit':''}${o.bad?' bad':''}"><span>${esc(o.name||o.r.c||U('unnamed'))}</span><span class="d">${esc(o.txt)}</span></div>`).join('')+
    `<p class="verdict ${hits.length?'y':'n'}">${hits.length?esc(U('yes',{c:hits.join(', ')})):U('no')}</p>`+
    (canApply?`<div class="acts"><button type="button" class="cbtn pri" id="applyRes">${U('apply')}</button></div>`:'');
 }

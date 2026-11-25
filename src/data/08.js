@@ -11,3 +11,4 @@ for(const c in OV){const o=OV[c],v=D.find(x=>x.c===c);
  v.docs.push(['해외체류',o.doc,OVDOC,{...o.dif,ov:['y']}]);
  v.docs.push(['확인 필요','해외 체류기간 확인 후 결정','아래 해외 체류기간 계산기로 확인하고 질문에 다시 답해 주세요',{...o.dif,ov:['chk']}]);
  v.ovm=o.m;v.ovw=o.w;}
+D.sort((a,b)=>{const p=c=>{const m=c.match(/^([A-Z])-(\d+)/);return [m[1],+m[2]]};const [la,na]=p(a.c),[lb,nb]=p(b.c);return la<lb?-1:la>lb?1:na-nb});
