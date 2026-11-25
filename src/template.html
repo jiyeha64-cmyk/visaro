@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>비자로</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: Korean public-service portal, sober, orderly, trustworthy
+   IDEA: a civil-petition guide page on a government-style portal (without any official emblem)
+   PICTURE: the step indicator and the petition-form-like checklist table
+   COLOUR and TYPE: white, gov navy #0b2d6b, link blue #1b5fd6, gray panels, orange only for conditional items; Noto Sans KR
+   LAYOUT: notice bar, header with logo and language, breadcrumb title, step indicator, form-style sections */
+:root{color-scheme:light dark;--bg:light-dark(#fff,#0f1218);--sub:light-dark(#f4f6f9,#171c25);--card:light-dark(#fff,#141922);--ink:light-dark(#1e2124,#e6e9ee);--mut:light-dark(#555c66,#a2aab6);--line:light-dark(#d6dbe1,#2c3442);--lin2:light-dark(#b9c1cc,#3a4456);--n:light-dark(#0b2d6b,#8fb2ff);--nf:#0b2d6b;--p:light-dark(#1b5fd6,#8fb2ff);--pbg:light-dark(#eaf1fd,#1a2742);--on:light-dark(#fff,#0f1218);--o:light-dark(#b54708,#ffb37a);--obg:light-dark(#fdf1e7,#3a2414);--red:light-dark(#c62828,#ff8a80)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip;word-break:keep-all;overflow-wrap:anywhere}
+html[lang=zh] body{font-family:"Noto Sans SC","Noto Sans KR",system-ui,sans-serif}html[lang=ja] body{font-family:"Noto Sans JP","Noto Sans KR",system-ui,sans-serif}
+.in{max-width:1180px;margin:0 auto;padding:0 max(4vw,16px)}
+.notice{background:light-dark(#f1f3f6,#1a1f29);border-bottom:1px solid var(--line);font-size:13px;color:var(--mut)}
+.notice .in{display:flex;align-items:center;gap:8px;min-height:36px;flex-wrap:wrap}
+.notice b{color:var(--red);font-weight:500}
+header{border-bottom:1px solid var(--line);background:var(--bg)}
+.hrow{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;min-height:76px}
+.brand{display:flex;align-items:center;gap:10px}
+.mark{width:40px;height:40px;flex:none}
+.logo{margin:0;font-weight:700;font-size:26px;line-height:1;color:var(--n);letter-spacing:-.01em}
+.logo small{font-size:13px;font-weight:500;color:var(--mut);margin-left:8px;letter-spacing:0}
+.langs{display:flex;border:1px solid var(--lin2);border-radius:4px;overflow:hidden}
+.langs button{font:inherit;font-size:14px;min-height:40px;padding:4px 14px;border:0;border-left:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.langs button:first-child{border-left:0}
+.langs button[aria-pressed=true]{background:var(--nf);color:#fff;font-weight:500}
+.gnb{background:var(--nf);color:#fff}
+.gnb .in{display:flex;gap:28px;min-height:48px;align-items:center;font-size:15px;font-weight:500;overflow-x:auto}
+.gnb button{font:inherit;color:#fff;background:none;border:0;cursor:pointer;white-space:nowrap;opacity:.8;min-height:48px;padding:0 2px}.gnb button:hover{opacity:1}.gnb button.cur{opacity:1;box-shadow:inset 0 -3px 0 #fff}.gnb button:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.help ol{margin:0;padding-left:1.3em}.help li{margin:6px 0}.help{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:18px 22px}
+.stn,#qs,#slip{scroll-margin-top:12px}
+.titlebar{background:var(--sub);border-bottom:1px solid var(--line);padding:22px 0 24px}
+.crumb{font-size:13px;color:var(--mut);margin:0 0 6px}
+.titlebar h1{margin:0;font-size:clamp(24px,3vw,32px);line-height:1.25;font-weight:700;color:var(--ink)}
+.titlebar p{margin:8px 0 0;color:var(--mut);max-width:72ch;font-size:15px}
+.route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:22px 0 0;border:1px solid var(--lin2);border-radius:4px;background:var(--card);counter-reset:s}
+.route button{font:inherit;background:var(--card);border:0;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:15px;color:var(--mut);border-left:1px solid var(--line);position:relative}
+.route button:first-child{border-left:0}
+.route i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1px solid var(--lin2);font-style:normal;font-size:14px;font-weight:700;flex:none;background:var(--card)}
+.route button:hover{background:var(--pbg)}.route button:focus-visible{outline:3px solid var(--p);outline-offset:-3px}.route .on,.route .on:hover{background:var(--nf);color:#fff;font-weight:700}.route .on i{background:#fff;color:var(--nf);border-color:#fff}
+.route .ok{color:var(--n)}.route .ok i{background:var(--pbg);color:var(--n);border-color:var(--n)}
+@media(max-width:600px){.route button{font:inherit;background:var(--card);border:0;cursor:pointer;text-align:left;flex-direction:column;gap:4px;text-align:center;font-size:13px;padding:10px 6px}}
+.wrap{max-width:1180px;margin:0 auto;padding:30px max(4vw,16px) 40px}
+.stn{margin-bottom:34px}.stn>.num{display:none}
+.step{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:700;color:var(--ink);margin:0 0 12px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.step::before{content:"";width:8px;height:8px;background:var(--n);flex:none}
+.pick{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:18px 20px}
+.pick .top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+.pick h2{margin:0;font-size:17px;flex:1 1 auto}
+input[type=search],input[type=text],input[type=date]{font:inherit;font-size:16px;min-height:44px;padding:8px 12px;border:1px solid var(--lin2);border-radius:4px;background:var(--card);color:var(--ink)}
+input:focus{border-color:var(--p)}
+#search{width:min(340px,100%)}
+input:focus-visible,button:focus-visible{outline:3px solid var(--p);outline-offset:2px}
+.grp{margin:16px 0 6px;font-size:14px;color:var(--ink);font-weight:700}
+.visas{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.visas button{font:inherit;text-align:left;min-height:54px;padding:8px 12px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);cursor:pointer;line-height:1.3}
+.visas button:hover{border-color:var(--p);background:var(--pbg)}
+.visas b{display:block;font-size:15px;color:var(--n)}.visas span{font-size:13px;color:var(--mut)}
+.chosen{display:none;align-items:center;gap:12px;flex-wrap:wrap}
+.pick.done .chosen{display:flex}.pick.done .list{display:none}
+.chosen strong{font-size:18px;color:var(--n)}.chosen p{margin:0;color:var(--mut);font-size:14px;flex-basis:100%}
+.linkbtn{font:inherit;font-size:14px;min-height:38px;padding:4px 14px;border-radius:4px;border:1px solid var(--lin2);background:var(--card);color:var(--ink);cursor:pointer}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:start}
+@media(max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
+.q{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px 18px 14px;margin-bottom:10px}
+.q.ovq{border-color:var(--o);background:var(--obg)}
+.q h3{margin:0 0 4px;font-size:16px;font-weight:700}.q .hint{margin:0 0 8px;color:var(--mut);font-size:14px}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.opts button{font:inherit;font-size:15px;min-height:44px;padding:8px 14px;border-radius:4px;border:1px solid var(--lin2);background:var(--card);color:var(--ink);cursor:pointer;text-align:left;line-height:1.35}
+.opts button:hover{border-color:var(--p)}
+.opts button[aria-pressed=true]{background:var(--nf);border-color:var(--nf);color:#fff;font-weight:500}
+.tocalc{font:inherit;font-size:14px;margin-top:10px;padding:0;border:0;background:none;color:var(--p);text-decoration:underline;cursor:pointer;min-height:32px}
+.noq{color:var(--mut);background:var(--sub);border:1px solid var(--line);border-radius:4px;padding:16px 18px}
+.slip{position:sticky;top:16px;background:var(--card);border:1px solid var(--lin2);border-top:3px solid var(--nf);border-radius:0}
+@media(max-width:900px){.slip{position:static}}
+.slip .head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;background:var(--sub);border-bottom:1px solid var(--line)}
+.slip h2{margin:0;font-size:18px}.cnt{font-size:14px;white-space:nowrap;color:var(--n);font-weight:500}
+.slipbody{padding:4px 20px 18px}
+.empty{color:var(--mut);padding:26px 0;text-align:center}
+.prog{height:6px;background:var(--line);overflow:hidden;margin:12px auto 0;max-width:240px}.prog i{display:block;height:100%;background:var(--nf);transition:width .3s}
+@media(prefers-reduced-motion:reduce){.prog i{transition:none}}
+.doc{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.box{width:22px;height:22px;border:1px solid var(--lin2);border-radius:3px;margin-top:2px;cursor:pointer;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;background:var(--card);padding:0}
+.box[aria-checked=true]{background:var(--nf);border-color:var(--nf)}
+.doc b{font-weight:500}.why{display:block;color:var(--mut);font-size:14px;margin-top:2px}
+.tag{display:inline-block;font-size:12px;padding:0 7px;border:1px solid var(--lin2);border-radius:3px;margin-right:6px;vertical-align:1px;white-space:nowrap;color:var(--mut);font-weight:500;line-height:20px}
+.tag.t2{border-color:var(--p);color:var(--p);background:var(--pbg)}.tag.t3{border-color:var(--o);color:var(--o);background:var(--obg)}
+.note{margin:14px 0 0;padding:12px 14px;border:1px solid var(--line);background:var(--sub);font-size:14px;color:var(--ink)}
+.note::before{content:"※ ";color:var(--o);font-weight:700}
+.info{padding:18px 0;font-size:15px}
+.foot{margin-top:14px;font-size:13px;color:var(--mut)}.foot strong{color:var(--red);font-weight:500}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.acts button,.cbtn{font:inherit;font-size:14px;min-height:40px;padding:6px 16px;border-radius:4px;border:1px solid var(--lin2);background:var(--card);color:var(--ink);cursor:pointer}
+.cbtn.pri,#copy{background:var(--nf);border-color:var(--nf);color:#fff;font-weight:500}
+#calc{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:20px 22px;scroll-margin-top:16px}
+#calc h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}#calc .lead{margin:0 0 12px;color:var(--mut);font-size:14px;max-width:72ch}
+.rule{display:inline-block;font-size:13px;padding:4px 10px;border:1px solid var(--o);color:var(--o);background:var(--obg);border-radius:3px;margin-bottom:12px}
+.crow{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:end;margin-bottom:8px}
+.crow label{display:block;font-size:13px;color:var(--mut);margin-bottom:2px}.crow input{width:100%}
+.del{font:inherit;min-width:44px;min-height:44px;border:1px solid var(--lin2);border-radius:4px;background:var(--card);color:var(--mut);cursor:pointer}
+@media(max-width:640px){.crow{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}.crow .cn{grid-column:1/-1}}
+.appd{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.appd label{font-size:14px;color:var(--mut)}
+.res{margin-top:14px;border-top:2px solid var(--ink);padding-top:4px}
+.rline{display:flex;justify-content:space-between;gap:10px;padding:10px 4px;font-size:15px;border-bottom:1px solid var(--line)}
+.rline .d{white-space:nowrap;color:var(--mut)}.rline.hit .d{color:var(--o);font-weight:700}
+.verdict{margin:12px 0 0;padding:12px 14px;font-size:15px;border:1px solid}
+.verdict.y{background:var(--obg);color:var(--o);border-color:var(--o)}.verdict.n{background:var(--pbg);color:var(--n);border-color:var(--p)}
+.small{font-size:13px;color:var(--mut);margin-top:10px}
+.sitefoot{background:var(--sub);border-top:1px solid var(--line);color:var(--mut);font-size:13px;padding:22px 0}
+.sitefoot p{margin:2px 0}
+</style></head><body>
+<div class="notice"><div class="in"><b data-t="nb"></b><span data-t="nt"></span></div></div>
+<header><div class="in hrow"><div class="brand"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="6" fill="#0b2d6b"/><rect x="10" y="9" width="20" height="23" rx="2" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M14.5 16h11M14.5 21h11M14.5 26h6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="29" cy="29" r="6" fill="#1b5fd6" stroke="#fff" stroke-width="2"/><path d="m26.4 29 1.8 1.8 3.3-3.4" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="logo">비자로<small data-t="sub"></small></p></div><div class="langs" role="group" aria-label="Language"><button data-l="ko">한국어</button><button data-l="en">English</button><button data-l="zh">中文</button><button data-l="ja">日本語</button></div></div></header>
+<nav class="gnb" aria-label="메뉴"><div class="in"><button type="button" class="cur" data-go="sec1" data-t="m1"></button><button type="button" data-go="sec3" data-t="m2"></button><button type="button" data-go="sec4" data-t="m3"></button></div></nav>
+<section class="titlebar"><div class="in"><p class="crumb" data-t="crumb"></p><h1 data-t="h1"></h1><p data-t="lead"></p>
+<nav class="route" aria-label="진행 단계"><button type="button" id="r1" data-go="sec1"><i>1</i><span data-t="r1"></span></button><button type="button" id="r2" data-go="qs"><i>2</i><span data-t="r2"></span></button><button type="button" id="r3" data-go="slip"><i>3</i><span data-t="r3"></span></button></nav></div></section>
+<div class="wrap">
+<div class="stn" id="sec1"><span class="num">1</span><p class="step" data-t="r1"></p>
+<section class="pick" id="pick">
+<div class="list"><div class="top"><h2 data-t="pickh"></h2><input id="search" type="search"></div><div id="visas"></div></div>
+<div class="chosen"><strong id="chName"></strong><button class="linkbtn" id="change" type="button" data-t="change"></button><p id="chDesc"></p></div>
+</section></div>
+<div class="stn"><span class="num">2</span><p class="step"><span data-t="r2"></span> · <span data-t="r3"></span></p>
+<main class="two">
+<section id="qs"></section>
+<aside class="slip" id="slip" aria-live="polite"><div class="head"><h2 data-t="sliph"></h2><span class="cnt" id="cnt"></span></div><div class="slipbody"><div id="out"></div><div id="xnote"></div>
+<p class="foot"><span data-t="foot1"></span> <strong data-t="foot2"></strong> <span data-t="foot3"></span></p>
+<div class="acts"><button id="copy" type="button" data-t="copy"></button><button id="reset" type="button" data-t="reset"></button></div></div></aside>
+</main><div style="height:26px"></div></div>
+<div class="stn" id="sec3"><span class="num">+</span><p class="step" data-t="calch"></p>
+<section id="calc" aria-labelledby="calch">
+<h2 id="calch" data-t="calch"></h2><p class="lead" data-t="calclead"></p>
+<span class="rule" id="rule"></span>
+<div class="appd"><label for="appDate" data-t="appdate"></label><input type="date" id="appDate"></div>
+<div id="rows"></div>
+<button class="cbtn" id="addRow" type="button" data-t="addrow"></button>
+<div class="res" id="res"></div>
+<p class="small" data-t="calcnote"></p>
+</section></div>
+<div class="stn last" id="sec4"><p class="step" data-t="m3"></p><div class="help"><ol><li data-t="hp1"></li><li data-t="hp2"></li><li data-t="hp3"></li><li data-t="hp4"></li><li data-t="hp5"></li></ol></div></div>
+</div>
+<footer class="sitefoot"><div class="in"><p data-t="ft1"></p><p data-t="ft2"></p></div></footer>
+<script>
+{
+/*DATA*/
+const STR=/*STR*/;const TR=/*TR*/;
+const UI={
+h1:['체류자격별 사증 제출서류 안내','Visa documents by status of stay','按滞留资格的签证提交材料指南','在留資格別 査証提出書類のご案内'],
+nb:['안내','Notice','提示','ご案内'],
+nt:['이 누리집은 공식 정부 누리집이 아닙니다. 법무부 사증발급 안내매뉴얼을 바탕으로 만든 학생 프로젝트 시안입니다.','This is not an official government website. It is a student project prototype based on the Ministry of Justice visa manual.','本网站并非政府官方网站，是根据法务部签证发放指南制作的学生项目原型。','このサイトは政府の公式サイトではありません。法務部の査証発給案内マニュアルを基にした学生プロジェクトの試作版です。'],
+sub:['비자 제출서류 안내','Visa document guide','签证材料指南','ビザ提出書類案内'],
+m1:['제출서류 안내','Document guide','材料指南','提出書類案内'],m2:['해외 체류기간 계산','Overseas stay check','海外滞留期间计算','海外滞在期間の計算'],m3:['이용 안내','How to use','使用说明','ご利用案内'],
+crumb:['홈 › 사증 › 제출서류 안내','Home › Visa › Document guide','首页 › 签证 › 材料指南','ホーム › 査証 › 提出書類案内'],
+ft1:['비자로 · 학생 프로젝트 시안 · 출처: 사증발급 안내매뉴얼(법무부, 2026. 11.)','Visaro · student project prototype · Source: Visa Issuance Guide Manual (Ministry of Justice, Nov 2026)','Visaro · 学生项目原型 · 来源：签证发放指南手册（法务部，2026年11月）','ビザロ · 学生プロジェクト試作版 · 出典：査証発給案内マニュアル（法務部、2026年11月）'],
+ft2:['정확한 안내는 하이코리아(hikorea.go.kr), 외국인종합안내센터 1345, 관할 재외공관에서 확인하세요.','For official guidance, check HiKorea (hikorea.go.kr), the Immigration Contact Center 1345, or your Korean embassy.','正式信息请向HiKorea（hikorea.go.kr）、外国人综合服务中心1345或管辖驻外使领馆确认。','正確な案内はHiKorea（hikorea.go.kr）、外国人総合案内センター1345、管轄の在外公館でご確認ください。'],
+hp1:['체류자격 선택: 신청하려는 비자를 고르세요. 코드(D-2)나 이름(유학)으로 검색할 수 있어요.','Select status: pick the visa you will apply for. You can search by code (D-2) or name (study).','选择滞留资格：选择要申请的签证，可按代码（D-2）或名称（留学）搜索。','在留資格の選択：申請するビザを選びます。コード（D-2）や名称（留学）で検索できます。'],
+hp2:['신청인 상황 입력: 질문에 답하면 답에 따라 다음 질문이 바뀌어요.','Your situation: answer the questions; follow-up questions change with your answers.','填写申请人情况：回答问题，后续问题会根据回答变化。','申請者の状況入力：質問に答えると、回答に応じて次の質問が変わります。'],
+hp3:['제출서류 확인: 해당하는 서류만 목록에 나와요. 준비한 서류는 체크하고, 목록 복사로 저장할 수 있어요.','Check documents: only the documents that apply are listed. Tick what you have ready and use Copy list to save it.','确认提交材料：只显示符合的材料。可勾选已准备的材料，并用复制清单保存。','提出書類の確認：該当する書類だけが表示されます。準備した書類にチェックし、リストをコピーして保存できます。'],
+hp4:['해외 체류기간 계산: 다른 나라에 오래 머문 적이 있으면, 기간을 넣어 그 나라 범죄경력증명서가 필요한지 확인하세요.','Overseas stay check: if you stayed long in another country, enter the dates to see whether that country\'s criminal record certificate is needed.','海外滞留期间计算：如曾在其他国家长期停留，输入期间即可确认是否需要该国犯罪记录证明。','海外滞在期間の計算：他国に長く滞在したことがあれば、期間を入力してその国の犯罪経歴証明書が必要か確認してください。'],
+hp5:['언어: 오른쪽 위에서 한국어·English·中文·日本語로 바꿀 수 있어요. 번역은 참고용이며 한국어 원문이 우선이에요.','Language: switch between Korean, English, Chinese and Japanese at the top right. Translations are for reference; the Korean original prevails.','语言：可在右上角切换韩语·英语·中文·日语。译文仅供参考，以韩文原文为准。','言語：右上で韓国語・英語・中国語・日本語に切り替えられます。翻訳は参考用で、韓国語の原文が優先します。'],
+r1:['체류자격 선택','Select status','选择滞留资格','在留資格の選択'],r2:['신청인 상황 입력','Your situation','填写申请人情况','申請者の状況入力'],r3:['제출서류 확인','Check documents','确认提交材料','提出書類の確認'],
+lead:['체류자격을 고르고 질문 몇 개에 답하면, 법무부 사증발급 안내매뉴얼 기준으로 나에게 해당하는 서류만 걸러서 보여드려요.','Pick your visa status and answer a few questions. We filter the Ministry of Justice visa issuance manual down to only the documents that apply to you.','选择滞留资格并回答几个问题，即可按照法务部签证发放指南只筛选出与您相关的材料。','在留資格を選んでいくつかの質問に答えると、法務部の査証発給案内マニュアルに基づき該当する書類だけを表示します。'],
+s1:['1단계','Step 1','第1步','ステップ1'],s2:['2단계','Step 2','第2步','ステップ2'],
+pickh:['어떤 비자(체류자격)를 신청하나요?','Which visa (status) are you applying for?','您要申请哪种签证（滞留资格）？','どのビザ（在留資格）を申請しますか？'],
+ph:['예: D-2, 유학, 결혼','e.g. D-2, study, marriage','例：D-2、留学、结婚','例：D-2、留学、結婚'],
+change:['다른 자격 고르기','Choose another','选择其他资格','別の資格を選ぶ'],
+sliph:['제출서류 체크리스트','Document checklist','提交材料清单','提出書類チェックリスト'],
+foot1:['사증발급 안내매뉴얼(법무부, 2026. 11.)을 바탕으로 정리한 시안이에요.','A prototype based on the Visa Issuance Guide Manual (Ministry of Justice, Nov 2026).','本原型基于《签证发放指南手册》（法务部，2026年11月）整理。','査証発給案内マニュアル（法務部、2026年11月）を基にまとめた試作版です。'],
+foot2:['실제 안내용이 아니에요.','Not for official guidance.','并非正式指南。','実際の案内用ではありません。'],
+foot3:['재외공관·출입국·외국인청은 심사에 필요하면 서류를 더하거나 뺄 수 있으니, 최종 확인은 하이코리아·관할 기관에서 해야 해요.','Embassies and immigration offices may add or remove documents, so confirm with HiKorea or the relevant office. Translations are for reference; the Korean original prevails.','驻外使领馆·出入境机关可能根据审查需要增减材料，请最终向HiKorea或管辖机关确认。译文仅供参考，以韩文原文为准。','在外公館・出入国機関は審査上必要に応じて書類を増減できるため、最終確認はHiKoreaや管轄機関で行ってください。翻訳は参考用で、韓国語の原文が優先します。'],
+copy:['목록 복사','Copy list','复制清单','リストをコピー'],reset:['답변 다시 하기','Reset answers','重新回答','回答をやり直す'],
+copied:['복사됨','Copied','已复制','コピーしました'],nocopy:['복사 안 됨','Copy failed','复制失败','コピーできません'],
+pickfirst:['먼저 위에서 체류자격을 골라 주세요.','Pick a visa status above first.','请先在上方选择滞留资格。','まず上で在留資格を選んでください。'],
+slipempty:['체류자격을 고르면<br>여기에 필요한 서류가 나와요.','Pick a visa status<br>to see the documents here.','选择滞留资格后<br>这里会显示所需材料。','在留資格を選ぶと<br>ここに必要書類が表示されます。'],
+noq:['이 자격은 추가 질문이 없어요. 오른쪽 목록을 확인하세요.','No further questions for this status. See the list.','此资格没有其他问题，请查看清单。','この資格は追加の質問がありません。リストを確認してください。'],
+sel:['{n}/{t} 선택','{n}/{t} answered','已选 {n}/{t}','{n}/{t} 選択'],
+more:['왼쪽 질문 {n}개에 더 답하면<br>필요한 서류만 여기에 나와요.','Answer {n} more question(s)<br>to see only the documents you need.','再回答 {n} 个问题<br>这里就会只显示所需材料。','あと{n}問に答えると<br>必要な書類だけがここに表示されます。'],
+ready:['{t}개 중 {n}개 준비됨','{n} of {t} ready','{t} 项中已准备 {n} 项','{t}件中{n}件準備済み'],
+none:['찾는 자격이 없어요. 다른 말로 검색해 보세요.','No match. Try another word.','没有找到，请换个词搜索。','該当がありません。別の言葉で検索してください。'],
+tocalc:['해외 체류기간 계산기로 확인하기 ↓','Check with the overseas stay calculator ↓','用海外滞留期间计算器确认 ↓','海外滞在期間計算機で確認する ↓'],
+calch:['해외 체류기간 계산기','Overseas stay calculator','海外滞留期间计算器','海外滞在期間計算機'],
+calclead:['국적국이 아닌 나라에 머문 기간을 넣으면, 그 나라 범죄경력증명서(아포스티유 또는 영사확인)가 필요한지 계산해요.','Enter stays in countries other than your nationality to see whether you need a criminal record certificate (apostilled or consular-confirmed) from that country.','输入在国籍国以外国家停留的期间，即可计算是否需要该国的犯罪记录证明（海牙认证或领事认证）。','国籍国以外の国に滞在した期間を入れると、その国の犯罪経歴証明書（アポスティーユまたは領事確認）が必要か計算します。'],
+rule:['기준: {w}연속 {m}개월 이상 머문 나라','Rule: countries where you stayed {m}+ months continuously{w}','标准：{w}连续停留{m}个月以上的国家','基準：{w}連続{m}か月以上滞在した国'],
+win:['신청일 기준 최근 5년 안에 ',' within the last 5 years before applying','申请日前近5年内','申請日基準で最近5年以内に'],
+appdate:['신청 예정일','Planned application date','预计申请日','申請予定日'],
+country:['나라','Country','国家','国'],from:['시작일','From','开始日','開始日'],to:['종료일 (비우면 신청일까지)','To (blank = until application)','结束日（空白则至申请日）','終了日（空欄なら申請日まで）'],
+cph:['예: 일본','e.g. Japan','例：日本','例：日本'],
+addrow:['+ 체류 기록 추가','+ Add a stay','+ 添加停留记录','+ 滞在記録を追加'],del:['삭제','Remove','删除','削除'],
+dur:['{y}년 {mo}개월 {d}일','{y}y {mo}m {d}d','{y}年{mo}个月{d}天','{y}年{mo}か月{d}日'],
+counted:['(최근 5년 안 기간만 계산)','(only days within the last 5 years)','（仅计算近5年内）','（最近5年以内の期間のみ計算）'],
+yes:['범죄경력증명서가 필요한 나라: {c}','Criminal record certificate needed from: {c}','需要犯罪记录证明的国家：{c}','犯罪経歴証明書が必要な国：{c}'],
+no:['기준에 해당하는 나라가 없어요. 추가 범죄경력증명서는 필요 없어요.','No country meets the rule. No extra criminal record certificate needed.','没有符合标准的国家，无需额外的犯罪记录证明。','基準に該当する国はありません。追加の犯罪経歴証明書は不要です。'],
+nodata:['체류 기록을 입력하면 결과가 나와요.','Enter a stay to see the result.','输入停留记录后显示结果。','滞在記録を入力すると結果が表示されます。'],
+apply:['이 결과를 질문에 적용','Apply this to the question','将此结果应用到问题','この結果を質問に適用'],
+applied:['적용했어요','Applied','已应用','適用しました'],
+unnamed:['이름 없는 나라','unnamed country','未命名国家','名前のない国'],
+calcnote:['면제: 신청일 기준 만 14세 미만, 한국 출생 또는 만 14세 전 입국 후 만 14세 이후 해외에 6개월 이상 연속 체류하지 않은 사람 등(매뉴얼 해외범죄경력증명서 제출기준). 증명서는 발급일로부터 6개월 이내여야 해요. 계산은 참고용이에요.','Exempt: under 14 at application; born in Korea or entered before 14 and never abroad 6+ months in a row after turning 14, etc. (manual\'s overseas criminal record criteria). Certificates must be issued within 6 months. For reference only.','免除：申请日未满14周岁者；在韩出生或14岁前入境且14岁后未在海外连续停留6个月以上者等（手册海外犯罪记录证明提交标准）。证明须为签发后6个月内。计算仅供参考。','免除：申請日基準で満14歳未満、韓国生まれまたは14歳前に入国し14歳以降に海外に6か月以上連続滞在していない者など（マニュアルの海外犯罪経歴証明書提出基準）。証明書は発行日から6か月以内のものが必要です。計算は参考用です。']
+};
+const LANGS=['ko','en','zh','ja'];
+const IDX=new Map(STR.map((s,i)=>[s,i]));
+let L='ko';try{const s=localStorage.getItem('visaLang');if(LANGS.includes(s))L=s}catch(e){}
+const li=()=>LANGS.indexOf(L);
+const T=s=>{if(!s||L==='ko')return s;const i=IDX.get(s);return i==null?s:(TR[L][i]||s)};
+const U=(k,o)=>{let s=UI[k][li()];if(o)for(const x in o)s=s.split('{'+x+'}').join(o[x]);return s};
+const GROUPS=['유학·연수','취업·사업','전문직 취업','비전문 취업','가족·동포','단기 방문','외교·공무','기타'];
+const $=id=>document.getElementById(id);
+const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let V=null,ans={},done={},ovC=[];
+const ok=c=>!c||Object.keys(c).every(k=>c[k].includes(ans[k]));
+function applyLang(){
+  document.documentElement.lang=L;
+  document.querySelectorAll('[data-t]').forEach(e=>{e.innerHTML=U(e.dataset.t)});
+  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===L));
+  $('search').placeholder=U('ph');$('search').setAttribute('aria-label',U('pickh'));
+  if(V){$('chName').textContent=`${V.c} ${T(V.n)}`;$('chDesc').textContent=T(V.d)}
+  drawVisas($('search').value);render();drawRows();calc();
+}
+function drawVisas(f){
+  f=(f||'').trim().toLowerCase();
+  $('visas').innerHTML=GROUPS.map(g=>{
+    const Ls=D.filter(v=>v.g===g&&(!f||[v.c,v.n,v.d,T(v.n),T(v.d)].join(' ').toLowerCase().includes(f)));
+    return Ls.length?`<p class="grp">${esc(T(g))}</p><div class="visas">${Ls.map(v=>`<button type="button" data-c="${v.c}"><b>${esc(v.c)}</b><span>${esc(T(v.n))}</span></button>`).join('')}</div>`:'';
+  }).join('')||`<p class="empty">${U('none')}</p>`;
+}
+function choose(c){
+  V=D.find(v=>v.c===c);ans={};done={};ovC=[];
+  $('pick').classList.add('done');$('chName').textContent=`${V.c} ${T(V.n)}`;$('chDesc').textContent=T(V.d);
+  try{history.replaceState(null,'','#'+V.c.replace(/[^A-Za-z0-9]/g,'').toLowerCase())}catch(e){}
+  render();calc();
+}
+function visibleQs(){const out=[];for(const q of V.q){if(ok(q.if))out.push(q);else delete ans[q.k]}return out}
+function route(st){['r1','r2','r3'].forEach((id,i)=>{const e=$(id);e.className=i<st?'ok':(i===st?'on':'')})}
+function render(){
+  if(!V){route(0)}
+  if(!V){$('qs').innerHTML=`<p class="noq">${U('pickfirst')}</p>`;$('out').innerHTML=`<p class="empty">${U('slipempty')}</p>`;$('cnt').textContent='';$('xnote').innerHTML='';return}
+  const Q=visibleQs();
+  $('qs').innerHTML=Q.length?Q.map((q,i)=>`<div class="q${q.ov?' ovq':''}"><h3>${i+1}. ${esc(T(q.t))}</h3>${q.h?`<p class="hint">${esc(T(q.h))}</p>`:''}<div class="opts" data-k="${q.k}">${q.o.map(([v,l])=>`<button type="button" data-v="${v}" aria-pressed="${ans[q.k]===v}">${esc(T(l))}</button>`).join('')}</div>${q.ov?`<button type="button" class="tocalc">${U('tocalc')}</button>`:''}</div>`).join(''):`<p class="noq">${U('noq')}</p>`;
+  $('xnote').innerHTML=V.x?`<p class="note">${esc(T(V.x))}</p>`:'';
+  if(V.none){route(2);$('cnt').textContent='';$('out').innerHTML=`<p class="info">${esc(T(V.none))}</p>`;return}
+  const n=Q.filter(q=>ans[q.k]).length;
+  route(n<Q.length?1:2);
+  if(n<Q.length){$('cnt').textContent=U('sel',{n,t:Q.length});$('out').innerHTML=`<p class="empty">${U('more',{n:Q.length-n})}</p><div class="prog"><i style="width:${n/Q.length*100}%"></i></div>`;return}
+  const Ls=list(),c=Ls.filter(d=>done[d.id]).length;
+  $('cnt').textContent=U('ready',{n:c,t:Ls.length});
+  $('out').innerHTML=Ls.map(d=>`<div class="doc"><button type="button" class="box" role="checkbox" aria-checked="${!!done[d.id]}" aria-label="${esc(d.name)}" data-id="${d.id}">${done[d.id]?'✓':''}</button><div><span class="tag ${d.cls}">${esc(d.tag)}</span><b>${esc(d.name)}</b>${d.why?`<span class="why">${esc(d.why)}</span>`:''}</div></div>`).join('');
+}
+function list(){
+  return V.docs.map((d,i)=>({i,k:d[0],tag:T(d[0]),name:T(d[1]),why:T(d[2]),c:d[3]})).filter(d=>ok(d.c)).map(d=>({...d,name:d.k==='해외체류'&&ovC.length?d.name+' — '+ovC.join(', '):d.name,id:V.c+'-'+d.i,cls:d.k==='공통'?'':(/해당자|확인|면제|해외체류/.test(d.k)?'t3':'t2')}));
+}
+/* calculator */
+const today=new Date();const iso=d=>d.toISOString().slice(0,10);
+$('appDate').value=iso(today);
+let rows=[{c:'',f:'',t:''}];
+function drawRows(){
+  $('rows').innerHTML=rows.map((r,i)=>`<div class="crow" data-i="${i}"><div class="cn"><label for="c${i}">${U('country')}</label><input type="text" id="c${i}" data-k="c" value="${esc(r.c)}" placeholder="${esc(U('cph'))}"></div><div><label for="f${i}">${U('from')}</label><input type="date" id="f${i}" data-k="f" value="${r.f}"></div><div><label for="t${i}">${U('to')}</label><input type="date" id="t${i}" data-k="t" value="${r.t}"></div><button type="button" class="del" aria-label="${U('del')}" data-del="${i}">✕</button></div>`).join('');
+}
+const pd=s=>{if(!s)return null;const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d))};
+const addM=(d,m)=>{const x=new Date(d);const day=x.getUTCDate();x.setUTCDate(1);x.setUTCMonth(x.getUTCMonth()+m);const last=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+1,0)).getUTCDate();x.setUTCDate(Math.min(day,last));return x};
+function diff(a,b){let y=0,mo=0;while(addM(a,(y+1)*12)<=b)y++;while(addM(a,y*12+mo+1)<=b)mo++;const base=addM(a,y*12+mo);const d=Math.round((b-base)/864e5);return {y,mo,d}}
+function rule(){const m=V&&V.ovm||6,w=V?V.ovw:5;return {m,w:w==null?5:w}}
+let lastHit=null;
+function calc(){
+  const {m,w}=rule();
+  $('rule').textContent=U('rule',{m,w:w?U('win'):''});
+  const app=pd($('appDate').value)||pd(iso(today));
+  const ws=w?addM(app,-12*w):null;
+  const out=[];const hits=[];
+  rows.forEach(r=>{const f=pd(r.f);if(!f)return;let t=pd(r.t)||app;if(t>app)t=app;let s=f;let clipped=false;if(ws&&s<ws){s=ws;clipped=true}
+    if(t<=s){out.push({r,txt:'0',hit:false});return}
+    const dd=diff(s,t);const hit=addM(s,m)<=t;const name=r.c.trim()||U('unnamed');if(hit&&!hits.includes(name))hits.push(name);
+    out.push({r,name,txt:U('dur',dd)+(clipped?' '+U('counted'):''),hit});});
+  if(!out.length){$('res').innerHTML=`<p class="small">${U('nodata')}</p>`;lastHit=null;return}
+  lastHit=hits;
+  const canApply=V&&V.q.some(q=>q.ov)&&visibleQs().some(q=>q.ov);
+  $('res').innerHTML=out.map(o=>`<div class="rline${o.hit?' hit':''}"><span>${esc(o.name||o.r.c||U('unnamed'))}</span><span class="d">${esc(o.txt)}</span></div>`).join('')+
+   `<p class="verdict ${hits.length?'y':'n'}">${hits.length?esc(U('yes',{c:hits.join(', ')})):U('no')}</p>`+
+   (canApply?`<div class="acts"><button type="button" class="cbtn pri" id="applyRes">${U('apply')}</button></div>`:'');
+}
+$('rows').addEventListener('input',e=>{const row=e.target.closest('.crow');if(!row)return;rows[+row.dataset.i][e.target.dataset.k]=e.target.value;calc()});
+$('rows').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;rows.splice(+b.dataset.del,1);if(!rows.length)rows=[{c:'',f:'',t:''}];drawRows();calc()});
+$('addRow').addEventListener('click',()=>{rows.push({c:'',f:'',t:''});drawRows();calc();const ins=$('rows').querySelectorAll('input[data-k=c]');ins[ins.length-1].focus()});
+$('appDate').addEventListener('input',calc);
+$('res').addEventListener('click',e=>{if(e.target.id!=='applyRes'||!lastHit)return;ans.ov=lastHit.length?'y':'n';ovC=lastHit.slice();render();e.target.textContent=U('applied');document.querySelector('.slip').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})});
+/* events */
+document.querySelector('.route').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const tgt=b.dataset.go==='qs'&&!V?'sec1':(b.dataset.go==='slip'&&!V?'sec1':b.dataset.go);$(tgt).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});if(tgt==='sec1'&&!V)$('search').focus({preventScroll:true})});
+document.querySelector('.gnb').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;document.querySelectorAll('.gnb [data-go]').forEach(x=>x.classList.toggle('cur',x===b));$(b.dataset.go).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+$('visas').addEventListener('click',e=>{const b=e.target.closest('button');if(b)choose(b.dataset.c)});
+$('search').addEventListener('input',e=>drawVisas(e.target.value));
+$('change').addEventListener('click',()=>{$('pick').classList.remove('done');drawVisas($('search').value);$('search').focus()});
+$('qs').addEventListener('click',e=>{if(e.target.closest('.tocalc')){$('calc').scrollIntoView({behavior:'smooth'});return}const b=e.target.closest('.opts button');if(!b)return;const k=b.parentElement.dataset.k;ans[k]=b.dataset.v;if(k==='ov'&&b.dataset.v!=='y')ovC=[];render();calc()});
+$('out').addEventListener('click',e=>{const b=e.target.closest('.box');if(!b)return;done[b.dataset.id]=!done[b.dataset.id];render()});
+$('reset').addEventListener('click',()=>{ans={};done={};ovC=[];render();calc()});
+document.querySelector('.langs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;L=b.dataset.l;try{localStorage.setItem('visaLang',L)}catch(x){}applyLang()});
+$('copy').addEventListener('click',async()=>{
+  if(!V)return;const Q=visibleQs();
+  const txt=V.none?T(V.none):list().map(d=>`- [${d.tag}] ${d.name}${d.why?' ('+d.why+')':''}`).join('\n');
+  const head=`${V.c} ${T(V.n)}\n`+Q.filter(q=>ans[q.k]).map(q=>`· ${T(q.t)} ${T(q.o.find(o=>o[0]===ans[q.k])[1])}`).join('\n');
+  try{await navigator.clipboard.writeText(head+'\n\n'+txt);$('copy').textContent=U('copied')}catch(e){$('copy').textContent=U('nocopy')}
+  setTimeout(()=>{$('copy').textContent=U('copy')},1600);
+});
+const h=(location.hash||'').slice(1);const hv=h&&D.find(v=>v.c.replace(/[^A-Za-z0-9]/g,'').toLowerCase()===h);
+applyLang();if(hv)choose(hv.c);
+}
+</script>
+</body></html>
