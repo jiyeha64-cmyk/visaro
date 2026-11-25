@@ -58,7 +58,7 @@ input:focus-visible,button:focus-visible{outline:3px solid var(--p);outline-offs
 .grp{margin:16px 0 6px;font-size:14px;color:var(--ink);font-weight:700}
 .visas{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
 .visas button{font:inherit;text-align:left;min-height:54px;padding:8px 12px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);cursor:pointer;line-height:1.3}
-.visas button.mg{background:#f4f5f7;color:var(--mut)}.visas button.mg b{text-decoration:line-through}.visas button .vn{display:block;margin-top:3px;font-size:11.5px;font-weight:700;color:var(--red)}
+.visas button.mg{background:#f4f5f7;color:var(--mut)}.visas button .vn{font-style:normal;font-size:12px;font-weight:700;color:var(--red)}
 .visas button:hover{border-color:var(--p);background:var(--pbg)}
 .visas b{display:block;font-size:15px;color:var(--n)}.visas span{font-size:13px;color:var(--mut)}
 .chosen{display:none;align-items:center;gap:12px;flex-wrap:wrap}
@@ -766,7 +766,7 @@ appdate:['신청 예정일','Planned application date','预计申请日','申請
 country:['나라','Country','国家','国'],from:['시작일','From','开始日','開始日'],to:['종료일 (비우면 신청일까지)','To (blank = until application)','结束日（空白则至申请日）','終了日（空欄なら申請日まで）'],
 cph:['예: 일본','e.g. Japan','例：日本','例：日本'],
 addrow:['+ 체류 기록 추가','+ Add a stay','+ 添加停留记录','+ 滞在記録を追加'],baddate:['종료일이 시작일보다 빨라요. 날짜를 확인해 주세요.','End date is before the start date. Please check.','结束日早于开始日，请检查日期。','終了日が開始日より前です。日付を確認してください。'],
-merged:['신규 발급 중단 → F-4로 통합','No new visas → merged into F-4','已停止新签发 → 并入F-4','新規発給停止 → F-4に統合'],
+merged:['현재 F-4로 통합','now merged into F-4','现已并入F-4','現在はF-4に統合'],
 where:['발급처·자세히','Where to get it','签发处·详情','発行先・詳細'],
 del:['삭제','Remove','删除','削除'],
 dur:['{y}년 {mo}개월 {d}일','{y}y {mo}m {d}d','{y}年{mo}个月{d}天','{y}年{mo}か月{d}日'],
@@ -802,7 +802,7 @@ function drawVisas(f){
   f=(f||'').trim().toLowerCase();
   $('visas').innerHTML=GROUPS.map(g=>{
     const Ls=D.filter(v=>v.g===g&&(!f||[v.c,v.n,v.d,T(v.n),T(v.d)].join(' ').toLowerCase().includes(f)));
-    return Ls.length?`<p class="grp">${esc(T(g))}</p><div class="visas">${Ls.map(v=>`<button type="button" data-c="${v.c}"${v.mg?' class="mg"':''}><b>${esc(v.c)}</b><span>${esc(T(v.n))}</span>${v.mg?`<span class="vn">${U('merged')}</span>`:''}</button>`).join('')}</div>`:'';
+    return Ls.length?`<p class="grp">${esc(T(g))}</p><div class="visas">${Ls.map(v=>`<button type="button" data-c="${v.c}"${v.mg?' class="mg"':''}><b>${esc(v.c)}${v.mg?` <em class="vn">(${U('merged')})</em>`:''}</b><span>${esc(T(v.n))}</span></button>`).join('')}</div>`:'';
   }).join('')||`<p class="empty">${U('none')}</p>`;
 }
 function choose(c){
